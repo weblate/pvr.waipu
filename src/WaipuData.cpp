@@ -481,7 +481,13 @@ PVR_ERROR WaipuData::GetEPGForChannel(ADDON_HANDLE handle, const PVR_CHANNEL &ch
         	XBMC->Log(LOG_DEBUG, "[epg] description: %s;",epgData["description"].GetString());
         }
 
-        //tag.strIconPath        = myTag.strIconPath.c_str();
+        // epg preview image
+        if(epgData.HasMember("previewImages") && epgData["previewImages"].IsArray() && epgData["previewImages"].Size() > 0){
+            string tmp_img = epgData["previewImages"][0].GetString();
+            tmp_img += "?width=480&height=270";
+            tag.strIconPath        = tmp_img.c_str();
+            XBMC->Log(LOG_DEBUG, "[epg] previewImage: %s;", tag.strIconPath);
+        }
 
         tag.iFlags             = EPG_TAG_FLAG_UNDEFINED;
 
