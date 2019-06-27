@@ -159,3 +159,25 @@ int Utils::stoiDefault(std::string str, int i)
 		return i;
 	}
 }
+
+bool Utils::FileDownload(std::string url, std::string fileName)
+{
+  void* inputFile = XBMC->OpenFile(url.c_str(), XFILE::READ_NO_CACHE);
+  if (inputFile)
+  {
+    void* outputFile = XBMC->OpenFileForWrite(fileName.c_str(), true);
+    if (outputFile)
+    {
+      char buffer[1024];
+      int datalen;
+      while ((datalen=XBMC->ReadFile(inputFile, buffer, sizeof(buffer))))
+      {
+        XBMC->WriteFile(outputFile, buffer, datalen);
+      }
+      XBMC->CloseFile(inputFile);
+      XBMC->CloseFile(outputFile);
+      return true;
+    }
+  }
+  return false;
+}
